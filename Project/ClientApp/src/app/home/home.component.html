@@ -1,0 +1,61 @@
+<div class="container py-5">
+  <div class="row">
+    <form class="col-12 float-left" [formGroup]="form" (submit)="submit()">
+      <div class="col-md-4 float-left form-group">
+        <label for="">Nombre</label>
+        <input type="text" class="form-control" formControlName="nombre" [(ngModel)]="user.nombre"/>
+      </div>
+      <div class="col-md-4 float-left form-group">
+        <label for="">Apellido</label>
+        <input type="text" class="form-control" formControlName="apellidos"  [(ngModel)]="user.apellidos"/>
+      </div>
+      <div class="col-md-4 float-left form-group">
+        <label for="">Fecha de Nacimiento</label>
+        <input type="date" class="form-control" useValueAsDate formControlName="fechaNac"  [(ngModel)]="user.fechaNac"/>
+      </div>
+      <div class="col-md-4 float-left form-group">
+        <label for="">Foto</label>
+        <input type="file" class="custom-file-input d-none" id="customFile" accept="image/*" formControlName="fotoUsuario" (change)="handleFileInput($event.target.files)" onchange="setTimeout(()=>{document.getElementById('Names').innerText=document.getElementById('customFile').files[0].name},100)">
+        <button *ngIf="base64String==''" class="btn btn-primary btn form-control" type="button" onclick="document.getElementById('customFile').click()">Añadir Archivo</button>
+        <div *ngIf="base64String!=''"><div id="Names" class="col-10 float-left"></div><button class="btn btn-danger btn col-2" type="button" (click)="base64String=''">X</button></div>
+      </div>
+      <div class="col-md-4 float-left form-group">
+        <label for="">Estado Civil</label>
+        <select class="form-control" formControlName="estadoCivil"  [(ngModel)]="user.estadoCivil">
+          <option value=0>Soltero</option>
+          <option value=1>Casado</option>
+          <option value=2>Divorciado</option>
+          <option value=3>Union Libre</option>
+        </select>
+      </div>
+      <div class="col-md-4 float-left form-group">
+        <label class="" for="exampleCheck1">¿Tiene hermanos?</label>
+        <input type="checkbox" class="form-control" id="exampleCheck1" formControlName="tieneHermanos" [(ngModel)]="user.tieneHermanos">
+      </div>
+      <div class="col-md-4 float-left form-group">
+        <button type="submit" class="btn btn-primary btn-lg">Ingresar</button>
+      </div>
+    </form>
+    <hr />
+    <br />
+    <br />
+    <br />
+    <div class="col-12">
+      <div class="col-md-4 float-left"  *ngFor="let usuario of usuarios">
+        <div class="card">
+          <img [src]="usuario.fotoUsuario" [alt]="usuario.nombre + ' '+usuario.apellidos" class="img-fluid" />
+          <div class="container">
+            <h2>{{usuario.nombre}} {{usuario.apellidos}}</h2>
+            <p>Fecha de Nacimiento: {{usuario.fechaNac | date:'shortDate'}}</p>
+            <p>Estado civil: {{estadoCivil(usuario.estadoCivil)}}</p>
+            <p>Tiene hermanos: {{usuario.tieneHermanos?'No':'Si'}}</p>
+            <div class="btn-group btn-group-sm w-100 pb-3" role="group">
+              <button class="btn btn-primary" (click)="editar(usuario)">Editar</button>
+              <button class="btn btn-danger" (click)="eliminar(usuario.id)">Eliminar</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
